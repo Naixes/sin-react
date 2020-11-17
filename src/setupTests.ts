@@ -2,4 +2,7 @@
 // allows you to do things like:
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
+
+// 运行测试之前运行，全局通用配置
+
 import '@testing-library/jest-dom';

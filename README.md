@@ -450,3 +450,19 @@ Button.defaultProps = {
 export default Button
 ```
 
+### 组件测试
+
+#### Jest-通用测试框架
+
+cra默认测试框架，断言库
+
+`npx jest xxx.js`
+
+#### react测试工具
+
+将react组件挂载到测试用例上，官方test utilities复杂难用，封装后enzyme（链式语法），react testing library（cra3.3.0以上内置）
+
+#### jest-dom工具
+
+新增了一些关于dom的断言（cra3.3.0以上内置）
+
