@@ -176,7 +176,8 @@ $box-shadow:                  0 .5rem 1rem rgba($black, .15) !default;
 $box-shadow-lg:               0 1rem 3rem rgba($black, .175) !default;
 $box-shadow-inset:            inset 0 1px 2px rgba($black, .075) !default;
 
-// 按钮
+// 按钮=================================================
+
 // 按钮基本属性
 $btn-font-weight:             400;
 $btn-padding-y:               .375rem !default;
@@ -206,7 +207,6 @@ $btn-link-color:              $link-color !default;
 $btn-link-hover-color:        $link-hover-color !default;
 $btn-link-disabled-color:     $gray-600 !default;
 
-
 // 按钮 radius
 $btn-border-radius:           $border-radius !default;
 $btn-border-radius-lg:        $border-radius-lg !default;
@@ -214,7 +214,8 @@ $btn-border-radius-sm:        $border-radius-sm !default;
 
 $btn-transition:              color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out !default;
 
-// menu
+// menu=================================================
+
 $menu-border-width:            $border-width !default;
 $menu-border-color:            $border-color !default;
 $menu-box-shadow:              inset 0 1px 0 rgba($white, .15), 0 1px 1px rgba($black, .075) !default;
@@ -231,7 +232,8 @@ $menu-item-disabled-color:     $gray-600 !default;
 //submenu
 $submenu-box-shadow: 0 2px 4px 0 rgba(0,0,0,.12), 0 0 6px 0 rgba(0,0,0,.04);
 
-//input
+//input=================================================
+
 $input-padding-y:                       $btn-padding-y !default;
 $input-padding-x:                       $btn-padding-x !default;
 $input-font-family:                     $btn-font-family !default;
@@ -279,7 +281,8 @@ $input-group-addon-color:               $input-color !default;
 $input-group-addon-bg:                  $gray-200 !default;
 $input-group-addon-border-color:        $input-border-color !default;
 
-// Progress bars
+// Progress bars=================================================
+
 $progress-font-size:                $font-size-base * .75 !default;
 $progress-bg:                       $gray-200 !default;
 $progress-border-radius:            $border-radius !default;

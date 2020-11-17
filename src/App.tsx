@@ -1,5 +1,6 @@
 import React from 'react';
-import logo from './logo.svg';
+
+import Button, {ButtonType, ButtonSize} from './components/Button/button';
 
 function App() {
   return (
@@ -17,6 +18,14 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <h4>button</h4>
+        <Button>null</Button>
+        <Button btnType={ButtonType.Danger} size={ButtonSize.Large}>danger large</Button>
+        <Button btnType={ButtonType.Link} href='www.baidu.com'>link</Button>
+        <Button disabled btnType={ButtonType.Link} href='www.baidu.com'>disabled link</Button>
+        <Button disabled btnType={ButtonType.Primary} size={ButtonSize.Small}>disabled primary small</Button>
+      </div>
     </div>
   );
 }

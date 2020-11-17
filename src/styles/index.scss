@@ -3,5 +3,11 @@
 // 导入时不需要_，sass不会将_文件（partial）编译到css文件，只能当作模块导入不能单独编译或使用
 @import "variables";
 
-//layout
+// layout
 @import "reboot";
+
+// mixin
+@import "mixin";
+
+// button
+@import "../components/Button/style";
