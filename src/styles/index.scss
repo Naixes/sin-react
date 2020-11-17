@@ -1,0 +1,7 @@
+// config
+// @import：sass提供，不同于css的import，直接将文件包含进来不会有额外的请求
+// 导入时不需要_，sass不会将_文件（partial）编译到css文件，只能当作模块导入不能单独编译或使用
+@import "variables";
+
+//layout
+@import "reboot";

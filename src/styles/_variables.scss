@@ -1,38 +1,3 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## 开发日志
-
-构建项目
-
-代码规范
-
-### 样式解决方案
-
-- inline css：使用类名比 inline css 在性能上要好
-
-- css in js：60多种方案，styled component是其中一种
-
-- sass/less（本项目使用）
-
-  安装node-sass
-
-#### 样式系统文件结构
-
-- styles：全局样式，包含以下内容
-  - \_variables.scss：变量及可配置设置
-  - \_mixins.scss
-  - \_functions.scss：计算并返回值
-
-- components/Button/style.scss：组件单独样式
-
-#### 色彩体系
-
-- 系统色板 - 基础色板（自然颜色定义） + 中性色板（黑白灰）
-
-- 产品色板 - 品牌色 + 功能色（成功，失败等）
-
-```scss
-// _variables.scss
 // 色彩系统=================================================
 
 // 中性色板，default：支持用户自定义
@@ -71,18 +36,7 @@ $warning:       $yellow !default;
 $danger:        $red !default;
 $light:         $gray-100 !default;
 $dark:          $gray-800 !default;
-```
 
-#### 样式变量分类
-
-- 基础色彩系统
-- 字体系统
-- 表单
-- 按钮
-- 边框和阴影
-- 可配置开关
-
-```scss
 // 字体系统=================================================
 
 // 字体家族
@@ -331,38 +285,3 @@ $progress-bg:                       $gray-200 !default;
 $progress-border-radius:            $border-radius !default;
 $progress-bar-color:                $white !default;
 $progress-bar-transition:           width .6s ease !default;
-```
-
-#### normalize.css
-
-使样式在各种浏览器中表现一致，见`_reboot.scss`，基于normalize修改而成
-
-```scss
-// config
-// @import：sass提供，不同于css的import，直接将文件包含进来不会有额外的请求
-// 导入时不需要_，sass不会将_文件编译到css文件，只能当作模块导入不能单独编译或使用
-@import "variables";
-
-//layout
-@import "reboot";
-
-...
-```
-
-### Button组件
-
-#### 需求分析
-
-type：primary，default，danger，link
-
-size：normal，small，large
-
-disabled：true，false（注意link button）
-
-原生属性的支持
-
-#### 工具
-
-npm i classnames --save
-
-npm i @types/classnames --save
