@@ -35,7 +35,7 @@ const disabledProps: ButtonProps = {
 // 分组
 describe('test Button component', () => {
     // it和test相同
-    it('should render the correct refault button', () => {
+    it('should render the correct default button', () => {
         const wrapper = render(<Button {...defalutProps}>testText</Button>)
         // getByText（返回HTMLElement）和queryByText（返回HTMLElement|null）只是返回的不一样
         const element = wrapper.getByText('testText') as HTMLButtonElement
