@@ -954,6 +954,28 @@ export default Icon
 
 ##### `react-transition-group`库
 
+> findDOMNode警告解决：
+>
+> From 4.4.0 release notes:
+>
+> > react-transition-group internally uses findDOMNode, which is deprecated and produces warnings in Strict Mode, so now you can optionally pass nodeRef to Transition and CSSTransition, it's a ref object that should point to the transitioning child:
+>
+> You can fix this like this
+>
+> ```
+> import React from "react"
+> import { CSSTransition } from "react-transition-group"
+> 
+> const MyComponent = () => {
+>   const nodeRef = React.useRef(null)
+>   return (
+>     <CSSTransition nodeRef={nodeRef} in timeout={200} classNames="fade">
+>       <div ref={nodeRef}>Fade</div>
+>     </CSSTransition>
+>   )
+> }
+> ```
+
 animate.css可以用来查找动画效果
 
 消失时display使动画失效，使用unmountOnExit属性
@@ -961,3 +983,87 @@ animate.css可以用来查找动画效果
 ### Transition组件
 
 transition冲突：提供一个空节点
+
+```tsx
+import React from 'react'
+import { CSSTransition } from 'react-transition-group'
+import { CSSTransitionProps } from 'react-transition-group/CSSTransition'
+
+type AnimationName = 'zoom-in-top' | 'zoom-in-left' | 'zoom-in-bottom' | 'zoom-in-right'
+
+// 报错
+// interface TransitionProps extends CSSTransitionProps {
+//   animation?: AnimationName,
+//   wrapper? : boolean,
+// }
+type TransitionProps = CSSTransitionProps & { animation?: AnimationName, wrapper?: boolean }
+
+const Transition: React.FC<TransitionProps> = (props) => {
+    const {
+        children,
+        classNames,
+        animation,
+        wrapper,
+        ...restProps
+    } = props
+
+    // 解决findDOMNode警告
+    const nodeRef = React.useRef(null)
+    return (
+        <CSSTransition
+            nodeRef={nodeRef}
+            classNames = { classNames ? classNames : animation}
+            {...restProps}
+        >
+          {wrapper ? <div>{children}</div> : children}
+        </CSSTransition>
+    )
+}
+
+Transition.defaultProps = {
+    unmountOnExit: true,
+    appear: true,
+}
+
+export default Transition
+```
+
+#### 样式
+
+```scss
+// _mixin.scss
+// 动画
+@mixin zoom-animation(
+  $direction: 'top',
+  $scaleStart: scaleY(0),
+  $scaleEnd: scaleY(1),
+  $origin: center top,
+) {
+  .zoom-in-#{$direction}-enter {
+    opacity: 0;
+    transform: $scaleStart;
+  }
+  .zoom-in-#{$direction}-enter-active {
+    opacity: 1;
+    transform: $scaleEnd;
+    transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms, opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+    transform-origin: $origin
+  }
+  .zoom-in-#{$direction}-exit {
+    opacity: 1;
+  }
+  .zoom-in-#{$direction}-exit-active {
+    opacity: 0;
+    transform: $scaleStart;
+    transition: transform 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms, opacity 300ms cubic-bezier(0.23, 1, 0.32, 1) 100ms;
+    transform-origin: $origin;
+  }
+}
+
+// _animation.scss
+@include zoom-animation('top', scaleY(0), scaleY(1), center top);
+@include zoom-animation('left', scale(.45, .45), scale(1, 1), top left);
+@include zoom-animation('right', scale(.45, .45), scale(1, 1), top right);
+@include zoom-animation('bottom', scaleY(0), scaleY(1),  center bottom);
+```
+
