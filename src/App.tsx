@@ -1,9 +1,15 @@
 import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 import Button, {ButtonType, ButtonSize} from './components/Button/button';
-import Menu, {} from './components/Menu/menu';
-import MenuItem, {} from './components/Menu/menuItem';
-import SubMenu, {} from './components/Menu/subMenu';
+import Menu from './components/Menu/menu';
+import MenuItem from './components/Menu/menuItem';
+import SubMenu from './components/Menu/subMenu';
+import Icon from './components/Icon/Icon';
+
+// 添加图标
+library.add(fas);
 
 function App() {
   return (
@@ -21,6 +27,10 @@ function App() {
           Learn React
         </a>
       </header>
+      <div>
+        <h4>icon</h4>
+        <Icon theme='primary' icon='angle-double-down'></Icon>
+      </div>
       <div>
         <h4>menu</h4>
         <Menu>

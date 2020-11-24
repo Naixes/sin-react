@@ -875,3 +875,89 @@ describe('test menu component in vertical mode', () => {
 })
 ```
 
+### Icon组件
+
+#### 图标解决方案
+
+雪碧图：不能缩放，不能css控制
+
+字体图标：控制字体属性，下载字体文件，各种奇怪的bug（显示方块等）
+
+svg：完全可控，即取即用
+
+#### `react-fontawesome`库
+
+支持svg
+
+```
+npm i --save @fortawesome/fontawesome-svg-core \
+             @fortawesome/free-solid-svg-icons \
+             @fortawesome/react-fontawesome
+```
+
+#### 样式循环
+
+```scss
+// _variables.scss
+$theme-colors: 
+(
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+// _style.scss
+@each $key, $val in $theme-colors {
+    .icon-#{$key} {
+      color: $val;
+    }
+  }
+```
+
+#### 代码
+
+```tsx
+import React from 'react'
+import classNames from 'classnames'
+import { FontAwesomeIcon, FontAwesomeIconProps } from '@fortawesome/react-fontawesome'
+
+export type ThemeProps = 'primary' | 'secondary' | 'success' | 'info' | 'warning' | 'danger' | 'light' | 'dark'
+export interface IconProps extends FontAwesomeIconProps {
+    theme?: string
+}
+
+const Icon: React.FC<IconProps> = (props) => {
+    const { className, theme, ...restProps } = props
+    const classes = classNames('s-icon', className, {
+        [`icon-${theme}`]: theme
+    })
+    return (
+        <FontAwesomeIcon className={classes} {...restProps}></FontAwesomeIcon>
+    )
+}
+
+export default Icon
+
+// 使用
+<Icon theme='primary' icon='angle-double-down'></Icon>
+```
+
+#### 动画animation
+
+##### css
+
+问题：display会让动画效果失效，只使用opacity不符合需求
+
+##### `react-transition-group`库
+
+animate.css可以用来查找动画效果
+
+消失时display使动画失效
+
+### Transition组件
+
+transition冲突：提供一个空节点
