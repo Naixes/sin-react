@@ -956,7 +956,7 @@ export default Icon
 
 animate.css可以用来查找动画效果
 
-消失时display使动画失效
+消失时display使动画失效，使用unmountOnExit属性
 
 ### Transition组件
 
