@@ -8,7 +8,7 @@ type MenuMode = 'horizontal' | 'vertical'
 export interface MenuProps {
     mode?: MenuMode;
     defaultIndex?: string;
-    defaulteOpenSubMenus?: string[];
+    defaultOpenSubMenus?: string[];
     className?: string;
     style?: React.CSSProperties;
     onSelect?: (selectIndex: string) => void;
@@ -17,7 +17,7 @@ export interface MenuProps {
 interface IMenuContext {
     index: string;
     mode?: string;
-    defaulteOpenSubMenus?: string[];
+    defaultOpenSubMenus?: string[];
     onSelect?: (selectIndex: string) => void;
 }
 
@@ -30,7 +30,7 @@ const Menu: React.FC<MenuProps> = (props) => {
         children,
         mode,
         defaultIndex,
-        defaulteOpenSubMenus,
+        defaultOpenSubMenus,
         onSelect,
     } = props
 
@@ -49,14 +49,16 @@ const Menu: React.FC<MenuProps> = (props) => {
     const passedContext:IMenuContext = {
         index: active ? active : '0',
         mode,
-        defaulteOpenSubMenus,
+        defaultOpenSubMenus,
         onSelect: handleClick
     }
 
     const renderChildren = () => {
         return React.Children.map(children, (child, index) => {
             const childElement = child as React.FunctionComponentElement<MenuItemProps>
+            // 判断子组件类型
             if(childElement.type.displayName === 'MenuItem' || childElement.type.displayName === 'SubMenu') {
+                // 给子组件添加index
                 return React.cloneElement(childElement, {
                     index: index.toString()
                 })
@@ -67,7 +69,8 @@ const Menu: React.FC<MenuProps> = (props) => {
     }
 
     return (
-        <ul className={classes} style={style}>
+        // data-testid：方便测试
+        <ul className={classes} style={style} data-testid="test-menu">
             <MenuContext.Provider value={passedContext}>
                 {renderChildren()}
             </MenuContext.Provider>
@@ -78,7 +81,7 @@ const Menu: React.FC<MenuProps> = (props) => {
 Menu.defaultProps = {
     defaultIndex: '0',
     mode: 'horizontal',
-    defaulteOpenSubMenus: []
+    defaultOpenSubMenus: []
 }
 
 export default Menu

@@ -21,7 +21,7 @@ const SubMenu: React.FC<SubMenuProps> = (props) => {
     } = props
 
     const context = useContext(MenuContext)
-    const openedSubMenus = context.defaulteOpenSubMenus as Array<string>
+    const openedSubMenus = context.defaultOpenSubMenus as Array<string>
     const isOpen = (index && context.mode === 'vertical') ? openedSubMenus.includes(index) : false
     const [open, setOpen] = useState(isOpen)
 
@@ -58,7 +58,9 @@ const SubMenu: React.FC<SubMenuProps> = (props) => {
         const childrenComponent = React.Children.map(children, (child, i) => {
             // 类型断言
             const childElement = child as React.FunctionComponentElement<MenuItemProps>
+            // 判断子组件类型
             if(childElement.type.displayName === 'MenuItem') {
+                // 给子组件添加index
                 return React.cloneElement(childElement, {
                     index: `${index}-${i}`
                 })
