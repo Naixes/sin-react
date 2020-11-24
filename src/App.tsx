@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
@@ -7,11 +7,13 @@ import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menuItem';
 import SubMenu from './components/Menu/subMenu';
 import Icon from './components/Icon/Icon';
+import Transition from './components/Transition/Transition';
 
 // 添加图标
 library.add(fas);
 
 function App() {
+  const [show, setShow] = useState(false)
   return (
     <div className="App">
       <header className="App-header">
@@ -26,15 +28,27 @@ function App() {
       </header>
       <div>
         <h4>transition</h4>
-        <Button btnType={ButtonType.Danger}>click me</Button>
-        <div>
-          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-          <p>Edit <code>src/App.tsx</code> and save to reload.</p>
-        </div>
-        <Button btnType={ButtonType.Primary}>工具钮</Button>
+        <Button btnType={ButtonType.Danger} onClick={() => {setShow(!show)}}>click me</Button>
+        <Transition
+          in={show}
+          timeout={300}
+          animation='zoom-in-left'
+        >
+          <div>
+            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+            <p>Edit <code>src/App.tsx</code> and save to reload.</p>
+          </div>
+        </Transition>
+        <Transition
+          in={show}
+          timeout={300}
+          animation='zoom-in-left'
+        >
+          <Button btnType={ButtonType.Primary}>工具钮</Button>
+        </Transition>
       </div>
       <div>
         <h4>icon</h4>
