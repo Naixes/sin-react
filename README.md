@@ -996,7 +996,8 @@ type AnimationName = 'zoom-in-top' | 'zoom-in-left' | 'zoom-in-bottom' | 'zoom-i
 //   animation?: AnimationName,
 //   wrapper? : boolean,
 // }
-type TransitionProps = CSSTransitionProps & { animation?: AnimationName, wrapper?: boolean }
+// type TransitionProps = CSSTransitionProps & { animation?: AnimationName, wrapper?: boolean }
+type TransitionProps = CSSTransitionProps & { animation?: AnimationName}
 
 const Transition: React.FC<TransitionProps> = (props) => {
     const {
@@ -1015,7 +1016,8 @@ const Transition: React.FC<TransitionProps> = (props) => {
             classNames = { classNames ? classNames : animation}
             {...restProps}
         >
-          {wrapper ? <div>{children}</div> : children}
+            <div ref={nodeRef}>{children}</div>
+            {/* {wrapper ? <div>{children}</div> : children} */}
         </CSSTransition>
     )
 }
@@ -1065,5 +1067,27 @@ export default Transition
 @include zoom-animation('left', scale(.45, .45), scale(1, 1), top left);
 @include zoom-animation('right', scale(.45, .45), scale(1, 1), top right);
 @include zoom-animation('bottom', scaleY(0), scaleY(1),  center bottom);
+
+// menu_style.scss
+.menu-horizontal {
+    >.menu-item {
+        border-bottom: $menu-item-active-border-width solid transparent;
+    }
+    .s-submenu {
+        position: absolute;
+        background: $white;
+        z-index: 100;
+        top: calc(100% + 8px);
+        left: 0;
+        border: $menu-border-width solid $menu-border-color;
+        box-shadow: $submenu-box-shadow;
+    }
+    // 修改动画不正常bug
+    .zoom-in-top-enter, .zoom-in-top-enter-active, .zoom-in-top-exit, .zoom-in-top-exit-active {
+        position: absolute;
+        top: 100%;
+        left: 0;
+    }
+}
 ```
 

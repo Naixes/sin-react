@@ -82,6 +82,12 @@
       border: $menu-border-width solid $menu-border-color;
       box-shadow: $submenu-box-shadow;
     }
+    // 修改动画不正常bug
+    .zoom-in-top-enter, .zoom-in-top-enter-active, .zoom-in-top-exit, .zoom-in-top-exit-active {
+      position: absolute;
+      top: 100%;
+      left: 0;
+    }
   }
   .menu-vertical {
     flex-direction: column;

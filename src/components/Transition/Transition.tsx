@@ -9,7 +9,8 @@ type AnimationName = 'zoom-in-top' | 'zoom-in-left' | 'zoom-in-bottom' | 'zoom-i
 //   animation?: AnimationName,
 //   wrapper? : boolean,
 // }
-type TransitionProps = CSSTransitionProps & { animation?: AnimationName, wrapper?: boolean }
+// type TransitionProps = CSSTransitionProps & { animation?: AnimationName, wrapper?: boolean }
+type TransitionProps = CSSTransitionProps & { animation?: AnimationName}
 
 const Transition: React.FC<TransitionProps> = (props) => {
     const {
@@ -28,7 +29,8 @@ const Transition: React.FC<TransitionProps> = (props) => {
             classNames = { classNames ? classNames : animation}
             {...restProps}
         >
-          {wrapper ? <div>{children}</div> : children}
+            <div ref={nodeRef}>{children}</div>
+            {/* {wrapper ? <div>{children}</div> : children} */}
         </CSSTransition>
     )
 }
