@@ -1,11 +1,12 @@
 import React from 'react'
 import {storiesOf} from '@storybook/react'
 import {action} from '@storybook/addon-actions'
+import {withInfo} from '@storybook/addon-info'
 
 import Button from './button'
 
 const defaultButton = () => (
-    <Button>default button</Button>
+    <Button onClick={action('clicked')}>default button</Button>
 )
 
 const buttonWithSize = () => (
@@ -24,6 +25,14 @@ const buttonWithType = () => (
 )
 
 storiesOf('Button Component', module)
+.addDecorator(withInfo)
+.addParameters({
+    info: {
+        // 增加描述，支持md
+        text: 'this is a nice component',
+        inline: true
+    }
+})
 .add('Button', defaultButton)
 .add('不同尺寸的 Button', buttonWithSize)
 .add('不同类型的 Button', buttonWithType)

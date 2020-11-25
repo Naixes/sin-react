@@ -1290,8 +1290,157 @@ module.exports = {
 
 三种不同的写法，经典写法storiesOf
 
+```tsx
+import React from 'react'
+import {storiesOf} from '@storybook/react'
+import {action} from '@storybook/addon-actions'
+
+import Button from './button'
+
+const defaultButton = () => (
+    <Button onClick={action('clicked')}>default button</Button>
+)
+
+const buttonWithSize = () => (
+    <>
+        <Button size="lg">large button</Button>
+        <Button size="sm">small button</Button>
+    </>
+)
+
+const buttonWithType = () => (
+    <>
+        <Button btnType="primary">primary button</Button>
+        <Button btnType="danger">danger button</Button>
+        <Button btnType="link" href="www.baidu.com">link button</Button>
+    </>
+)
+
+storiesOf('Button Component', module)
+.add('Button', defaultButton)
+.add('不同尺寸的 Button', buttonWithSize)
+.add('不同类型的 Button', buttonWithType)
+```
+
 #### 插件系统addons
 
-两大类：装饰器
+两大类：装饰器（Decorators）和Native Addons
+
+```tsx
+// 在story中
+...
+const styles: React.CSSProperties = {
+    textAlign: center,
+}
+// 创建decorator
+const CenterDecorator = (storyFn: any) => <div style={styles}>{storyFn()}</div>
+...
+// 添加decorator
+storiesOf('Button Component', module)
+	.addDecorator(CenterDecorator)
+    .add('Button', defaultButton)
+    .add('不同尺寸的 Button', buttonWithSize)
+    .add('不同类型的 Button', buttonWithType)
+
+// 在全局
+import {addDecorator} from '@storybook/react'
+...
+const CenterDecorator = (storyFn: any) => <div style={styles}>{storyFn()}</div>
+addDecorator(CenterDecorator)
+```
 
 preview.js：全局配置
+
+##### Info Addon
+
+显示源代码，属性，添加描述信息等
+
+`npm i -D @storybook/addon-info`
+
+配置可以在三个维度进行修改：全局，story，case
+
+```tsx
+// 在story中
+import {withInfo} from '@storybook/addon-info'
+...
+// 添加decorator
+storiesOf('Button Component', module)
+	.addDecorator(withInfo)
+	.addParameters({
+    	info: {
+            // 增加描述，支持md
+            text: 'this is a nice component',
+            inline: true
+        }
+	})
+    .add('Button', defaultButton)
+	// 在case中
+    .add('不同尺寸的 Button', buttonWithSize, {
+    	info: {
+            inline: false
+        }
+	})
+    .add('不同类型的 Button', buttonWithType)
+```
+
+#### react-docgen
+
+自动生成文档
+
+- 分析参数，以表格显示
+- 添加注释并显示在表格和介绍中
+
+修改组件
+
+- 需要直接引入模块不能使用React.xxx
+- 使用export const Button...，不能只使用默认导出
+- 组件最后要加一个分号;
+
+配置loader
+
+`npm i -D react-docgen-typescript-loader`
+
+```tsx
+// 配置react-docgen-typescript-loader
+config.module.rules.push({
+    test: /\.tsx?$/,
+    include: path.resolve(__dirname, "../src"),
+    use: [
+        {
+            loader: require.resolve("react-docgen-typescript-loader"),
+            options: {
+                // 从枚举中提取值即展开显示枚举
+                shouldExtractLiteralValuesFromEnum: true,
+                // 过滤属性
+                propFilter: (prop) => {
+                    if (prop.parent) {
+                        return !prop.parent.fileName.includes('node_modules')
+                    }
+                    return true            
+                }
+            },
+        },
+    ],
+});
+```
+
+#### 注释: JSDoc标准
+
+例子：
+
+`/** 注释 */`
+
+```js
+/**
+ * Represents a book.
+ * @constructor
+ * @param {string} title - The title of the book.
+ * @param {string} author - The author of the book.
+ */
+```
+
+支持md
+
+要显示组件中的注释，case名称要和组件名称一样
+
+#### 优化样式

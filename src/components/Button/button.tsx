@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {ReactNode, ButtonHTMLAttributes, AnchorHTMLAttributes, FC} from 'react'
 import classNames from 'classnames'
 
 export enum ButtonSize {
@@ -19,16 +19,17 @@ interface BaseButtonProps {
     size?: string;
     btnType?: string;
     href?: string;
-    children: React.ReactNode
+    children: ReactNode
 }
 
 // 增加原生属性
-type NativeButtonProps = BaseButtonProps & React.ButtonHTMLAttributes<HTMLElement>
-type AnchorButtonProps = BaseButtonProps & React.AnchorHTMLAttributes<HTMLElement>
+type NativeButtonProps = BaseButtonProps & ButtonHTMLAttributes<HTMLElement>
+type AnchorButtonProps = BaseButtonProps & AnchorHTMLAttributes<HTMLElement>
 // ts提供的Partial：将所有属性变为可选
 export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
 
-const Button: React.FC<ButtonProps> = (props) => {
+// storybook的bug必须加export
+export const Button: FC<ButtonProps> = (props) => {
     const {
         // 用户自定义的class
         className,
@@ -75,4 +76,5 @@ Button.defaultProps = {
     btnType: ButtonType.Default
 }
 
-export default Button
+// storybook的bug必须加;
+export default Button;

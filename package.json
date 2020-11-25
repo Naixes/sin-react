@@ -52,12 +52,14 @@
   },
   "devDependencies": {
     "@storybook/addon-actions": "^6.1.6",
+    "@storybook/addon-info": "^5.3.21",
     "@storybook/addon-links": "^6.1.6",
     "@storybook/addons": "^6.1.6",
     "@storybook/preset-create-react-app": "^3.1.5",
     "@storybook/preset-scss": "^1.0.3",
     "@storybook/react": "^6.1.6",
     "css-loader": "^5.0.1",
+    "react-docgen-typescript-loader": "^3.7.2",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0"
   }

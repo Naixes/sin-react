@@ -1,3 +1,5 @@
+const path = require("path");
+
 module.exports = {
     stories: ['../src/**/*.stories.tsx'],
     // 官网ts配置：好像默认就支持
@@ -25,18 +27,43 @@ module.exports = {
         '@storybook/preset-create-react-app'
     ],
     webpackFinal: async config => {
+        // scss
         // Edit default scss loader to exclude storybook specific scss files
         config.module.rules = config.module.rules.filter(rule => {
-        if (rule.test instanceof RegExp && rule.test.test('.scss')) {
-            rule.exclude = /\.(stories|story).s[ca]ss$/;
-        }
-        return rule;
+            if (rule.test instanceof RegExp && rule.test.test('.scss')) {
+                rule.exclude = /\.(stories|story).s[ca]ss$/;
+            }
+            return rule;
         });
 
         config.module.rules.push({
-        test: /\.(stories|story).s[ca]ss$/,
-        use: ['style-loader', 'css-loader', 'sass-loader']
+            test: /\.(stories|story).s[ca]ss$/,
+            use: ['style-loader', 'css-loader', 'sass-loader']
         });
+
+        // 配置react-docgen-typescript-loader
+        config.module.rules.push({
+            test: /\.tsx?$/,
+            include: path.resolve(__dirname, "../src"),
+            use: [
+                {
+                    loader: require.resolve("react-docgen-typescript-loader"),
+                    options: {
+                        // 从枚举中提取值即展开显示枚举
+                        shouldExtractLiteralValuesFromEnum: true,
+                        // 过滤属性
+                        propFilter: (prop) => {
+                          if (prop.parent) {
+                            return !prop.parent.fileName.includes('node_modules')
+                          }
+                          return true            
+                        }
+                    },
+                },
+            ],
+        });
+
+        config.resolve.extensions.push(".ts", ".tsx");
 
         // Return the altered config
         return config;
