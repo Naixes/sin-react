@@ -1091,3 +1091,107 @@ export default Transition
 }
 ```
 
+### Storybook
+
+安装`npx sb init`
+
+> 报错：弹框，脚本错误
+>
+> 解决参考：https://blog.csdn.net/weixin_43768107/article/details/107038953
+>
+> 1.全局安装Storybook
+>
+> ```js
+> npm i -g storybook
+> ```
+>
+> 2.执行以下命令安装@storybook/react
+>
+> ```js
+> npm i --save-dev @storybook/react
+> ```
+>
+> 3.在package.json文件中
+>
+> ```js
+> {
+>   "scripts": {
+>     "storybook": "start-storybook -p 9009 -s public",
+>     "build-storybook": "build-storybook -s public"
+>   }
+> ```
+>
+> 4.在工程根目录创建.storybook目录
+>
+> 5.在.storybook目录下创建config.js文件
+>
+> ```js
+> import { configure, addDecorator } from '@storybook/react';
+> configure(require.context('../src', true, /\.stories\.tsx$/), module)
+> 12
+> ```
+>
+> 6.自己创建以.stories.js结尾的文件
+>
+> 7.需要集成typescrip,则创建webpack.config.js文件在.storybook文件夹里
+>
+> ```js
+> module.exports = ({ config }) => {
+>     config.module.rules.push({
+>       test: /\.tsx?$/,
+>       use: [
+>         {
+>           loader: require.resolve("babel-loader"),
+>           options: {
+>             presets: [require.resolve("babel-preset-react-app")]
+>           }
+>         }
+>       ]
+>     });
+>     config.resolve.extensions.push(".ts", ".tsx");
+>   
+>     return config;
+>   };
+> ```
+>
+> 8.安装其他依赖
+>
+> ```js
+> npm i @storybook/addon-actions @storybook/addon-links @storybook/addons -D
+> 1
+> ```
+>
+> 9.@storybook/preset-create-react-app用来代表您配置Storybook。这是由Storybook在自动设置（Storybook 5.3或更高版本）期间安装的。
+>
+> ```js
+> npm i --save-dev @storybook/preset-create-react-app
+> ```
+
+启动`npm run storybook`
+
+#### 支持ts
+
+参考：https://github.com/Luchanso/storybook-cra-ts-example/blob/master/.storybook/webpack.config.js
+
+```js
+module.exports = ({ config }) => {
+  config.module.rules.push({
+    test: /\.tsx?$/,
+    use: [
+      {
+        loader: require.resolve("babel-loader"),
+        options: {
+          presets: [require.resolve("babel-preset-react-app")]
+        }
+      },
+      // 自动生成文档
+      require.resolve("react-docgen-typescript-loader")
+    ]
+  });
+
+  config.resolve.extensions.push(".ts", ".tsx");
+
+  return config;
+};
+```
+
