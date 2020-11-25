@@ -55,6 +55,10 @@
     "@storybook/addon-links": "^6.1.6",
     "@storybook/addons": "^6.1.6",
     "@storybook/preset-create-react-app": "^3.1.5",
-    "@storybook/react": "^6.1.6"
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.1.6",
+    "css-loader": "^5.0.1",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0"
   }
 }

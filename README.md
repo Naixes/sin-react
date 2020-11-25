@@ -1093,11 +1093,13 @@ export default Transition
 
 ### Storybook
 
-安装`npx sb init`
+自动安装`npx sb init`
 
 > 报错：弹框，脚本错误
 >
 > 解决参考：https://blog.csdn.net/weixin_43768107/article/details/107038953
+>
+> 进行手动安装：
 >
 > 1.全局安装Storybook
 >
@@ -1174,6 +1176,7 @@ export default Transition
 参考：https://github.com/Luchanso/storybook-cra-ts-example/blob/master/.storybook/webpack.config.js
 
 ```js
+// webpack.config
 module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.tsx?$/,
@@ -1195,3 +1198,100 @@ module.exports = ({ config }) => {
 };
 ```
 
+> config.js不支持tsx
+>
+> ```json
+> // tsconfig.json
+> {
+>   "compilerOptions": {
+>     "target": "es5",
+>     "lib": [
+>       "dom",
+>       "dom.iterable",
+>       "esnext"
+>     ],
+>     "allowJs": true,
+>     "skipLibCheck": true,
+>     "esModuleInterop": true,
+>     "allowSyntheticDefaultImports": true,
+>     "strict": true,
+>     "forceConsistentCasingInFileNames": true,
+>     "noFallthroughCasesInSwitch": true,
+>     "module": "esnext",
+>     "moduleResolution": "node",
+>     "resolveJsonModule": true,
+>     "isolatedModules": true,
+>     "noEmit": true,
+>     "jsx": "react"
+>   },
+>   "include": [
+>     "src",
+>     // 增加包含文件
+>     ".storybook"
+>   ]
+> }
+> 
+> ```
+
+#### 配置scss
+
+删除webpack.config和config.tsx文件使用main.tsx进行配置
+
+`npm i -D @storybook/preset-scss css-loader sass-loader style-loader`
+
+```tsx
+module.exports = {
+    stories: ['../src/**/*.stories.tsx'],
+    // ts：好像默认就支持
+    // typescript: {
+    //   check: false,
+    //   checkOptions: {},
+    //   reactDocgen: 'react-docgen-typescript',
+    //   reactDocgenTypescriptOptions: {
+    //     shouldExtractLiteralValuesFromEnum: true,
+    //     propFilter: (prop) => (prop.parent ? !/node_modules/.test(prop.parent.fileName) : true),
+    //   },
+    // },
+    addons: [
+        // 官网scss配置，引入样式失败改为webpack配置的方式
+        // {
+        //     name: '@storybook/preset-scss',
+        //     options: {
+        //         cssLoaderOptions: {
+        //             modules: true
+        //         }
+        //     }
+        // },
+        // You can add other presets/addons by using the string declaration
+        '@storybook/addon-actions/register',
+        '@storybook/preset-create-react-app'
+    ],
+    webpackFinal: async config => {
+        // Edit default scss loader to exclude storybook specific scss files
+        config.module.rules = config.module.rules.filter(rule => {
+        if (rule.test instanceof RegExp && rule.test.test('.scss')) {
+            rule.exclude = /\.(stories|story).s[ca]ss$/;
+        }
+        return rule;
+        });
+
+        config.module.rules.push({
+        test: /\.(stories|story).s[ca]ss$/,
+        use: ['style-loader', 'css-loader', 'sass-loader']
+        });
+
+        // Return the altered config
+        return config;
+    },
+  }
+```
+
+#### button
+
+三种不同的写法，经典写法storiesOf
+
+#### 插件系统addons
+
+两大类：装饰器
+
+preview.js：全局配置

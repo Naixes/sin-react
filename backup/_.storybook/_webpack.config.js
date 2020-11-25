@@ -1,4 +1,5 @@
 module.exports = ({ config }) => {
+    // 配置ts
     config.module.rules.push({
       test: /\.tsx?$/,
       use: [
