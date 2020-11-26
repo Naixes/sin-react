@@ -12,7 +12,7 @@ const wrapperStyle: React.CSSProperties = {
 }
 const storyWrapper = (storyFn: any) => (
     <div style={wrapperStyle}>
-        <h3>组件演示</h3>
+        <h4>组件演示</h4>
         {storyFn()}
     </div>
 )
