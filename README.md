@@ -1302,18 +1302,19 @@ const defaultButton = () => (
 )
 
 const buttonWithSize = () => (
-    <>
+    // 使用空节点会显示Unknown component
+    <div>
         <Button size="lg">large button</Button>
         <Button size="sm">small button</Button>
-    </>
+    </div>
 )
 
 const buttonWithType = () => (
-    <>
+    <div>
         <Button btnType="primary">primary button</Button>
         <Button btnType="danger">danger button</Button>
         <Button btnType="link" href="www.baidu.com">link button</Button>
-    </>
+    </div>
 )
 
 storiesOf('Button Component', module)
@@ -1443,4 +1444,56 @@ config.module.rules.push({
 
 要显示组件中的注释，case名称要和组件名称一样
 
+```tsx
+...
+interface BaseButtonProps {
+    className?: string;
+    /** 设置 Button 是否禁用 */
+    disabled?: boolean;
+    /** 设置 Button 大小 */
+    size?: string;
+    /** 设置 Button 类型 */
+    btnType?: string;
+    href?: string;
+    children: ReactNode
+}
+
+/**
+ * 页面中最常用的的按钮元素，适合于完成特定的交互，支持 HTML button 和 a 链接 的所有属性
+ * ### 引用方法
+ * 
+ * ~~~js
+ * import { Button } from 'sin-react'
+ * ~~~
+ */
+export const Button: FC<ButtonProps> = (props) => {
+...
+```
+
 #### 优化样式
+
+```tsx
+import React from 'react'
+import {addDecorator, addParameters} from '@storybook/react'
+import {withInfo} from '@storybook/addon-info'
+
+import '../src/styles/index.scss'
+
+const wrapperStyle: React.CSSProperties = {
+    padding: '20px 40px 0 40px'
+}
+const storyWrapper = (storyFn: any) => (
+    <div style={wrapperStyle}>
+        <h3>组件演示</h3>
+        {storyFn()}
+    </div>
+)
+addDecorator(storyWrapper)
+addDecorator(withInfo)
+addParameters({info: { inline: true, header: false}})
+
+export const parameters = {
+    // layout: 'centered',
+};
+```
+
