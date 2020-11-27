@@ -2,7 +2,7 @@ import React, { ChangeEvent, FC, InputHTMLAttributes, ReactElement } from 'react
 import classNames from 'classnames'
 import {IconProp} from '@fortawesome/fontawesome-svg-core'
 
-import Icon from '../Icon/Icon'
+import Icon from '../Icon/icon'
 
 type InputSize = 'lg' | 'sm'
 
@@ -18,7 +18,7 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
     prepend?: string | ReactElement;
     /** 添加后缀， 用于配置一些固定组合 */
     append?: string | ReactElement;
-    onChange?: (e: ChangeEvent<HTMLInputElement>) => void
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 /**
@@ -37,7 +37,6 @@ export const Input: FC<InputProps> = (props) => {
         icon,
         prepend,
         append,
-        onChange,
         ...restProps
     } = props
 
@@ -67,8 +66,7 @@ export const Input: FC<InputProps> = (props) => {
     return (
         <div className={classes}>
             {prepend && <div className='s-input-group-prepend'>{prepend}</div>}
-            {
-                icon && 
+            {icon && 
                 <div className='icon-wrapper'>
                     <Icon icon={icon} title={`title-${icon}`}></Icon>
                 </div>

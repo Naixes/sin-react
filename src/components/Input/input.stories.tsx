@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
 import Input from './input'
 
 // 受控组件
-// const ControlledInput = () => {
-//   const [value, setValue] = useState()
-//   return <Input value={value} defaultValue={value} onChange={(e) => {setValue(e.target.value)}}/>
-// }
+const ControlledInput = () => {
+  const [value, setValue] = useState('')
+  return <Input 
+    value={value} 
+    defaultValue={value} 
+    onChange={(e) => {setValue(e.target.value)}}
+  />
+}
 
 const defaultInput = () => (
   <div>
@@ -16,7 +20,7 @@ const defaultInput = () => (
       placeholder="placeholder"
       onChange={action('changed')}
     />
-    {/* <ControlledInput /> */}
+    <ControlledInput />
   </div>
 )
 
