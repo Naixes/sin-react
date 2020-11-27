@@ -26,6 +26,8 @@ const SimpleComplete = () => {
     {value: 'kuzma', number: 0},
   ]
   const handleFetch = (query: string) => {
+    // console.log('handleFetch');
+    
     return lakersWithNumber.filter(player => player.value.includes(query))
   }
   // const handleFetch = (query: string) => {
@@ -50,7 +52,7 @@ const SimpleComplete = () => {
     <AutoComplete 
       fetchSuggestions={handleFetch}
       onSelect={action('selected')}
-      //renderOption={renderOption}
+      // renderOption={renderOption}
     />
   )
 }

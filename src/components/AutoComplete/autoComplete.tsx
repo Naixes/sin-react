@@ -1,8 +1,10 @@
-import React, { FC, ChangeEvent, useState, useEffect } from 'react'
+import React, { FC, ChangeEvent, useState, useEffect, ReactElement } from 'react'
 import classNames from 'classnames'
 
 import Input from '../Input/input'
 import Icon from '../Icon/icon'
+import useDebounce from '../../hooks/useDebounce'
+import { render } from 'react-dom'
 
 interface DataSourceDefaultObject {
     value: string;
@@ -11,8 +13,12 @@ export type DataSourceType<T = {}> = T & DataSourceDefaultObject
 
 export interface AutoCompleteProps {
     value?: string;
+    /** 下拉数据获取函数 */ 
     fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;
+    /** 选中下拉某一项的回调 */ 
     onSelect?: (item: DataSourceType) => void;
+    /** 自定义渲染模板 */ 
+    renderOption?: (item: DataSourceType) => ReactElement
 }
 
 export const AutoComplete: FC<AutoCompleteProps> = (props) => {
@@ -20,6 +26,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         value,
         fetchSuggestions,
         onSelect,
+        renderOption,
         ...restProps
     } = props
 
@@ -28,8 +35,11 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     const [suggestions, setSuggestion] = useState<DataSourceType[]>([])
     const [showDropDown, setShowDropDown] = useState(false)
 
+    // 防抖
+    const debounceValue = useDebounce(inputValue, 300)
+
     useEffect(() => {
-        const results = fetchSuggestions(inputValue)
+        const results = fetchSuggestions(debounceValue)
         if(results instanceof Promise) {
             setLoading(true)
             results.then(data => {
@@ -44,7 +54,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
                 setShowDropDown(true)
             }
         }
-    }, [fetchSuggestions, inputValue]);
+    }, [fetchSuggestions, debounceValue]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.trim()
@@ -59,6 +69,10 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         }
     }
 
+    const renderTemplate = (item: DataSourceType) => {
+        return renderOption ? renderOption(item) : item.value
+    }
+
     const generateDropDown = () => {
         return (
             <ul className='s-suggestion-list'>
@@ -70,7 +84,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
                 {suggestions.map((item, index) => {
                     return (
                         <li key={index} onClick={() => {handleSelect(item)}}>
-                            {item.value}
+                            {renderTemplate(item)}
                         </li>
                     )
                 })}
