@@ -5,6 +5,7 @@ import Input from '../Input/input'
 import Icon from '../Icon/icon'
 import Transition from '../Transition/Transition'
 import useDebounce from '../../hooks/useDebounce'
+import useClickOutside from '../../hooks/useClickOutside'
 
 interface DataSourceDefaultObject {
     value: string;
@@ -21,6 +22,14 @@ export interface AutoCompleteProps {
     renderOption?: (item: DataSourceType) => ReactElement
 }
 
+/**
+ * 输入框自动补全，根据输入值和自定义规则过滤数据并显示在下拉中，支持自定义模板，异步获取数据
+ * ### 引用方法
+ * 
+ * ~~~js
+ * import { AutoComplete } from 'sin-react'
+ * ~~~
+ */
 export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     const {
         value,
@@ -38,9 +47,12 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 
     // 标记是否重新渲染下拉，选中时不需要重新渲染
     const triggerSearch = useRef(false)
+    // 存储当前组件
+    const componentRef = useRef<HTMLDivElement>(null)
 
     // 防抖
     const debounceValue = useDebounce(inputValue, 300)
+    useClickOutside(componentRef, () => {setShowDropDown(false)})
 
     // 输入值改变时触发
     useEffect(() => {
@@ -120,6 +132,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 
     const generateDropDown = () => {
         return (
+            // showDropDown为false时清空下拉列表
             <Transition
               in={showDropDown || loading}
               animation="zoom-in-top"
@@ -148,7 +161,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     }
 
     return (
-        <div className='s-auto-complete'>
+        <div className='s-auto-complete' ref={componentRef}>
             <Input
                 value={inputValue}
                 onChange={handleChange}
