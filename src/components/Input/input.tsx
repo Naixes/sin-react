@@ -41,13 +41,28 @@ export const Input: FC<InputProps> = (props) => {
         ...restProps
     } = props
 
-    const classes = classNames('s-input-wapper', {
+    const classes = classNames('s-input-wrapper', {
         [`input-size-${size}`]: size,
         'is-disabled': disabled,
         'input-group': prepend || append,
         'input-group-prepend': !!prepend,
         'input-group-append': !!append,
     })
+
+    // 修改受控组件的bug
+    // 2.value从undefined修改为有意义的值会报警告
+    const fixControledValue = (value: any) => {
+        if(typeof value === 'undefined' || value === null) {
+            return ''
+        }else {
+            return value
+        }
+    }
+    if('value' in props) {
+        // 1.defaultValue和value不能同时存在
+        delete restProps.defaultValue
+        restProps.value = fixControledValue(props.value)
+    }
 
     return (
         <div className={classes}>
@@ -59,7 +74,7 @@ export const Input: FC<InputProps> = (props) => {
                 </div>
             }
             <input
-                className='s-input'
+                className='s-input-inner'
                 disabled={disabled}
                 {...restProps}
                 type="text"

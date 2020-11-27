@@ -1,6 +1,11 @@
 import React from 'react'
 import {addDecorator, addParameters} from '@storybook/react'
 import {withInfo} from '@storybook/addon-info'
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+// 添加图标
+library.add(fas)
 
 // storybook样式
 import './style.scss'

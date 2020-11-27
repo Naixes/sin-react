@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
-import Button, {ButtonType, ButtonSize} from './components/Button/button';
+import Button from './components/Button/button';
 import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menuItem';
 import SubMenu from './components/Menu/subMenu';
@@ -28,7 +28,7 @@ function App() {
       </header>
       <div>
         <h4>transition</h4>
-        <Button btnType={ButtonType.Danger} onClick={() => {setShow(!show)}}>click me</Button>
+        <Button btnType='danger' onClick={() => {setShow(!show)}}>click me</Button>
         <Transition
           in={show}
           timeout={300}
@@ -47,7 +47,7 @@ function App() {
           timeout={300}
           animation='zoom-in-left'
         >
-          <Button btnType={ButtonType.Primary}>工具钮</Button>
+          <Button btnType='primary'>工具钮</Button>
         </Transition>
       </div>
       <div>
@@ -86,10 +86,10 @@ function App() {
       <div>
         <h4>button</h4>
         <Button>null</Button>
-        <Button btnType={ButtonType.Danger} size={ButtonSize.Large}>danger large</Button>
-        <Button btnType={ButtonType.Link} href='www.baidu.com'>link</Button>
-        <Button disabled btnType={ButtonType.Link} href='www.baidu.com'>disabled link</Button>
-        <Button disabled btnType={ButtonType.Primary} size={ButtonSize.Small}>disabled primary small</Button>
+        <Button btnType='danger' size='lg'>danger large</Button>
+        <Button btnType='link' href='www.baidu.com'>link</Button>
+        <Button disabled btnType={'link'} href='www.baidu.com'>disabled link</Button>
+        <Button disabled btnType='primary' size='sm'>disabled primary small</Button>
       </div>
     </div>
   );

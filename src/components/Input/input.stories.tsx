@@ -1,19 +1,18 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { storiesOf } from '@storybook/react'
 import { action } from '@storybook/addon-actions'
 
 import Input from './input'
 
 // 受控组件
-const ControlledInput = () => {
-  const [value, setValue] = useState()
-  return <Input value={value} defaultValue={value} onChange={(e) => {setValue(e.target.value)}}/>
-}
+// const ControlledInput = () => {
+//   const [value, setValue] = useState()
+//   return <Input value={value} defaultValue={value} onChange={(e) => {setValue(e.target.value)}}/>
+// }
 
 const defaultInput = () => (
   <div>
     <Input
-      style={{width: '300px'}}
       placeholder="placeholder"
       onChange={action('changed')}
     />
@@ -23,7 +22,6 @@ const defaultInput = () => (
 
 const disabledInput = () => (
   <Input
-    style={{width: '300px'}}
     placeholder="disabled input"
     disabled 
   />
@@ -31,7 +29,6 @@ const disabledInput = () => (
 
 const iconInput = () => (
   <Input
-    style={{width: '300px'}}
     placeholder="input with icon"
     icon="search"
   />  
@@ -40,12 +37,10 @@ const iconInput = () => (
 const sizeInput = () => (
   <div>
     <Input
-      style={{width: '300px'}}
       defaultValue="large size"
       size="lg"
     />
     <Input
-      style={{width: '300px'}}
       placeholder="small size"
       size="sm"
     />
@@ -55,12 +50,10 @@ const sizeInput = () => (
 const pandInput = () => (
   <div>
     <Input
-      style={{width: '300px'}}
       defaultValue="prepend text"
       prepend="https://"
     />
     <Input
-      style={{width: '300px'}}
       defaultValue="google"
       append=".com"
     />
