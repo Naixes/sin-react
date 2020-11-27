@@ -410,11 +410,11 @@ $progress-bar-transition:           width .6s ease !default;
 
 #### 需求分析
 
-type：primary，default，danger，link
+类型，type：primary，default，danger，link
 
-size：normal，small，large
+大小，size：normal，small，large
 
-disabled：true，false（注意link button）
+禁用，disabled：true，false（注意link button）
 
 原生属性的支持
 
@@ -1496,4 +1496,44 @@ export const parameters = {
     // layout: 'centered',
 };
 ```
+
+### Input组件
+
+#### 需求分析
+
+大小：size
+
+禁用：disabled
+
+图标：icon
+
+前缀后缀：prepend/append
+
+自动补全，下拉菜单
+
+### AutoComplete组件
+
+#### 需求分析
+
+fetchSuggestions
+
+onSelect
+
+优化：
+
+custom options，自定义模板
+
+异步请求
+
+keyboard support
+
+debounce
+
+click outside
+
+#### 代码
+
+#### 测试
+
+
 

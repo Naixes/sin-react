@@ -43,6 +43,7 @@ export type ButtonProps = Partial<NativeButtonProps & AnchorButtonProps>
  * ~~~js
  * import { Button } from 'sin-react'
  * ~~~
+ * 支持 ButtonHTMLAttributes/AnchorHTMLAttributes 的所有基本属性
  */
 export const Button: FC<ButtonProps> = (props) => {
     const {
