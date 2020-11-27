@@ -1,10 +1,10 @@
-import React, { FC, ChangeEvent, useState, useEffect, ReactElement } from 'react'
+import React, { FC, ChangeEvent, useState, useEffect, ReactElement, KeyboardEvent, useRef } from 'react'
 import classNames from 'classnames'
 
 import Input from '../Input/input'
 import Icon from '../Icon/icon'
+import Transition from '../Transition/Transition'
 import useDebounce from '../../hooks/useDebounce'
-import { render } from 'react-dom'
 
 interface DataSourceDefaultObject {
     value: string;
@@ -32,33 +32,45 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 
     const [inputValue, setInputValue] = useState(value as string)
     const [loading, setLoading] = useState(false)
-    const [suggestions, setSuggestion] = useState<DataSourceType[]>([])
+    const [suggestions, setSuggestions] = useState<DataSourceType[]>([])
     const [showDropDown, setShowDropDown] = useState(false)
+    const [highlightIndex, setHighlightIndex] = useState(-1)
+
+    // 标记是否重新渲染下拉，选中时不需要重新渲染
+    const triggerSearch = useRef(false)
 
     // 防抖
     const debounceValue = useDebounce(inputValue, 300)
 
+    // 输入值改变时触发
     useEffect(() => {
-        const results = fetchSuggestions(debounceValue)
-        if(results instanceof Promise) {
-            setLoading(true)
-            results.then(data => {
-                setLoading(false)
-                if(data.length > 0) {
+        if(debounceValue && triggerSearch.current) {
+            const results = fetchSuggestions(debounceValue)
+            if(results instanceof Promise) {
+                setLoading(true)
+                results.then(data => {
+                    setLoading(false)
+                    setSuggestions(data)
+                    if(data.length > 0) {
+                        setShowDropDown(true)
+                    }
+                })
+            }else {
+                setSuggestions(results)
+                if(results.length > 0) {
                     setShowDropDown(true)
                 }
-            })
-        }else {
-            setSuggestion(results)
-            if(results.length > 0) {
-                setShowDropDown(true)
             }
+        }else {
+            setShowDropDown(false)
         }
+        setHighlightIndex(-1)
     }, [fetchSuggestions, debounceValue]);
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.trim()
         setInputValue(value)
+        triggerSearch.current = true
     }
 
     const handleSelect = (item: DataSourceType) => {
@@ -66,6 +78,39 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         setShowDropDown(false)
         if(onSelect) {
             onSelect(item)
+        }
+        triggerSearch.current = false
+    }
+
+    const highlight = (index: number) => {
+        if(index < 0) index = 0
+        if(index >= suggestions.length) {
+            index = suggestions.length - 1
+        }
+        setHighlightIndex(index)
+    }
+
+    const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+        switch (e.keyCode) {
+            // 回车
+            case 13:
+                if(suggestions[highlightIndex]) {
+                    handleSelect(suggestions[highlightIndex])
+                }
+                break;
+            // 上
+            case 38:
+                highlight(highlightIndex - 1)
+                break;
+            // 下
+            case 40:
+                highlight(highlightIndex + 1)
+                break;
+            // esc
+            case 27:
+                break;
+            default:
+                break;
         }
     }
 
@@ -75,20 +120,30 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 
     const generateDropDown = () => {
         return (
-            <ul className='s-suggestion-list'>
-                {loading && 
-                    <div className='suggstions-loading-icon'>
-                        <Icon icon='spinner' spin></Icon>
-                    </div>
-                }
-                {suggestions.map((item, index) => {
-                    return (
-                        <li key={index} onClick={() => {handleSelect(item)}}>
-                            {renderTemplate(item)}
-                        </li>
-                    )
-                })}
-            </ul>
+            <Transition
+              in={showDropDown || loading}
+              animation="zoom-in-top"
+              timeout={300}
+              onExited={() => {setSuggestions([])}}
+            >
+                <ul className='s-suggestion-list'>
+                    {loading && 
+                        <div className='suggstions-loading-icon'>
+                            <Icon icon='spinner' spin></Icon>
+                        </div>
+                    }
+                    {suggestions.map((item, index) => {
+                        const classes = classNames('suggestion-item', {
+                            'is-active': index === highlightIndex
+                        })
+                        return (
+                            <li className={classes} key={index} onClick={() => {handleSelect(item)}}>
+                                {renderTemplate(item)}
+                            </li>
+                        )
+                    })}
+                </ul>
+            </Transition>
         )
     }
 
@@ -97,6 +152,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
             <Input
                 value={inputValue}
                 onChange={handleChange}
+                onKeyDown={handleKeyDown}
                 {...restProps}
             ></Input>
             {generateDropDown()}
