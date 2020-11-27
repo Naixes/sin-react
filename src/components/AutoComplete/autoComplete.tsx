@@ -1,7 +1,7 @@
 import React, { FC, ChangeEvent, useState, useEffect, ReactElement, KeyboardEvent, useRef } from 'react'
 import classNames from 'classnames'
 
-import Input from '../Input/input'
+import Input, { InputProps } from '../Input/input'
 import Icon from '../Icon/icon'
 import Transition from '../Transition/Transition'
 import useDebounce from '../../hooks/useDebounce'
@@ -12,7 +12,7 @@ interface DataSourceDefaultObject {
 }
 export type DataSourceType<T = {}> = T & DataSourceDefaultObject
 
-export interface AutoCompleteProps {
+export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
     value?: string;
     /** 下拉数据获取函数 */ 
     fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;

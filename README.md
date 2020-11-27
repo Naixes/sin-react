@@ -1680,7 +1680,7 @@ interface DataSourceDefaultObject {
 }
 export type DataSourceType<T = {}> = T & DataSourceDefaultObject
 
-export interface AutoCompleteProps {
+export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
     value?: string;
     /** 下拉数据获取函数 */ 
     fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>;
@@ -1844,7 +1844,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 export default AutoComplete;
 ```
 
-#### 测试
+
 
 
 
