@@ -1613,13 +1613,10 @@ onSelect
 
 优化：
 
-custom options，自定义模板
-
-异步请求
-
-keyboard support
-
-debounce
+- custom options，自定义模板
+- 异步请求
+- keyboard support
+- debounce
 
 ```tsx
 import {useState, useEffect} from 'react'
@@ -1844,7 +1841,45 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
 export default AutoComplete;
 ```
 
+### Upload组件
 
+#### 需求分析
 
+- 流程分析：beforeUpload(file) --- onProgress(e.file) --- onChange(file) --- onSucess(file)/onError(error.file) --- onRemoved(file)
 
+- 异步请求：axios
 
+> fetch缺点：只对网络请求报错，400，500都算成功，默认不带cookie，不支持abort不支持超时控制，无法原生监测请求进度，需要封装
+
+- 状态显示
+- 进度条
+- 丰富上传数据
+  - 自定义header
+  - 添加name属性（发送到后台的文件参数名称）
+  - 添加data属性（额外参数）
+  - 增加input本身约束属性（multiple，accept等）
+  - 添加发送时是否携带cookie-withCredentials
+- 丰富界面和交互
+  - 自定义触发元素
+  - 支持拖动上传
+  - onPreview
+
+#### 代码
+
+使用mockServer（线上版本）：JSONPlaceholder，Mocky.io，和axios
+
+> mockServer本地版本可以使用JSONServer
+
+文件上传场景：
+
+表单上传，需要增加属性`encType="multipart/form-data"`
+
+js上传，选择后直接上传，formData模拟表单上传
+
+#### 测试
+
+##### 异步请求测试
+
+jest.mock(axios)
+
+##### 拖拽测试
