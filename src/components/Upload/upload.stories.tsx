@@ -44,7 +44,7 @@ const DragUpload = () => {
       beforeUpload={filePromise}
       onChange={action('changed')}
       onRemove={action('removed')}
-      drage
+      drag
     >
       <Icon icon="upload" size="5x" theme="secondary" />
       <br/>

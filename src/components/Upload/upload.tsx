@@ -17,30 +17,53 @@ export interface UploadFile {
     error?: any;
 }
 export interface UploadProps {
+    /** 设置 action */
     action: string;
+    /** 设置默认文件列表 */
     defaultFileList?: UploadFile[];
+    /** 上传前执行回调 */
     beforeUpload?: (file: File) => boolean | Promise<File>;
+    /** 上传中执行回调 */
     onProgress?: (percent: number, file: UploadFile) => void;
-    onSucess?: (data: any, file: UploadFile) => void;
+    /** 上传成功执行回调 */
+    onSuccess?: (data: any, file: UploadFile) => void;
+    /** 上传失败执行回调 */
     onError?: (err: any, file: UploadFile) => void;
+    /** 上传完成执行回调 */
     onChange?: (file: UploadFile) => void;
+    /** 删除文件执行回调 */
     onRemove?: (file: UploadFile) => void;
+    /** 自定义上传 headers */
     headers?: {[key: string]: any};
+    /** 设置上传时文件内容的 key */
     name?: string;
+    /** 自定义上传 data */
     data?: {[key: string]: any};
+    /** 设置是否携带 cookie */
     withCredentials?: boolean;
+    /** 设置支持的文件格式 */
     accept?: string;
+    /** 设置是否支持多文件上传 */
     multiple?: boolean;
-    drage?: boolean;
+    /** 设置是否拖拽上传 */
+    drag?: boolean;
 }
 
+/**
+ * 上传文件组件，包含完整的上传生命周期，进度条展示，支持多文件上传，拖拽上传
+ * ### 引用方法
+ * 
+ * ~~~js
+ * import { Upload } from 'sin-react'
+ * ~~~
+ */
 export const Upload: FC<UploadProps> = (props) => {
     const {
         action,
         defaultFileList,
         beforeUpload,
         onProgress,
-        onSucess,
+        onSuccess,
         onError,
         onChange,
         onRemove,
@@ -50,7 +73,7 @@ export const Upload: FC<UploadProps> = (props) => {
         withCredentials,
         accept,
         multiple,
-        drage,
+        drag,
         children,
     } = props
     const [fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
@@ -158,8 +181,10 @@ export const Upload: FC<UploadProps> = (props) => {
                 }
             }
         }).then(res => {
+            console.log(res.data);
+            
             updateFileList(file, {status: 'success', response: res.data})
-            onSucess && onSucess(res.data, file)
+            onSuccess && onSuccess(res.data, file)
             onChange && onChange(file)
         }).catch(err => {
             updateFileList(file, {status: 'error', error: err})
@@ -183,7 +208,7 @@ export const Upload: FC<UploadProps> = (props) => {
                 style={{display: 'inline-block'}}
                 onClick={handleClick}
             >
-                {drage ? 
+                {drag ? 
                     <Dragger onFile={files => {uploadFiles(files)}}>
                         {children}
                     </Dragger>:
