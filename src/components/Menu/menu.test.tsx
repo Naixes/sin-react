@@ -53,6 +53,7 @@ describe('test menu component in default/horazontal mode', () => {
         activeElement = wrapper.getByText('active')
         disabledElement = wrapper.getByText('disabled')
     })
+    
     it('shuold render correct menu with default props', () => {
         // 存在
         expect(menuElement).toBeInTheDocument()
@@ -65,6 +66,7 @@ describe('test menu component in default/horazontal mode', () => {
         // 禁用
         expect(disabledElement).toHaveClass('menu-item is-disabled')
     })
+
     it('click item shuold change active and call the correct callback', () => {
         const clickItem = wrapper.getByText('click')
         // 点击
@@ -77,6 +79,7 @@ describe('test menu component in default/horazontal mode', () => {
         expect(disabledElement).not.toHaveClass('is-active')
         expect(testProps.onSelect).not.toHaveBeenCalledWith('1')
     })
+    
     it('shuold show the dropdown items when hover on subMenu', async() => {
         const dropdownItems = wrapper.queryByText('dropItem')
         // 样式测试

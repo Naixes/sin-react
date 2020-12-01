@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, FC, CSSProperties } from 'react'
 import classNames from 'classnames'
 
 import { MenuItemProps } from './menuItem'
@@ -8,12 +8,13 @@ import Transition from '../Transition/Transition'
 
 export interface SubMenuProps {
     index?: string;
+    /** 设置可展开菜单标题 */
     title: string;
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
 }
 
-const SubMenu: React.FC<SubMenuProps> = (props) => {
+export const SubMenu: FC<SubMenuProps> = (props) => {
     const {
         className,
         style,
@@ -96,4 +97,4 @@ const SubMenu: React.FC<SubMenuProps> = (props) => {
 
 SubMenu.displayName = 'SubMenu'
 
-export default SubMenu
+export default SubMenu;

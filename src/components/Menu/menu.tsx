@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react'
+import React, { createContext, useState, CSSProperties, FC, Children, FunctionComponentElement, cloneElement } from 'react'
 import classNames from 'classnames'
 
 import { MenuItemProps } from './menuItem'
@@ -6,11 +6,15 @@ import { MenuItemProps } from './menuItem'
 type MenuMode = 'horizontal' | 'vertical'
 
 export interface MenuProps {
+    /** 设置 menu 模式 */
     mode?: MenuMode;
+    /** 设置默认选中 */
     defaultIndex?: string;
+    /** 设置默认展开 */
     defaultOpenSubMenus?: string[];
     className?: string;
-    style?: React.CSSProperties;
+    style?: CSSProperties;
+    /** 选中执行回调 */
     onSelect?: (selectIndex: string) => void;
 }
 
@@ -23,7 +27,7 @@ interface IMenuContext {
 
 export const MenuContext = createContext<IMenuContext>({index: '0'})
 
-const Menu: React.FC<MenuProps> = (props) => {
+export const Menu: FC<MenuProps> = (props) => {
     const {
         className,
         style,
@@ -54,12 +58,12 @@ const Menu: React.FC<MenuProps> = (props) => {
     }
 
     const renderChildren = () => {
-        return React.Children.map(children, (child, index) => {
-            const childElement = child as React.FunctionComponentElement<MenuItemProps>
+        return Children.map(children, (child, index) => {
+            const childElement = child as FunctionComponentElement<MenuItemProps>
             // 判断子组件类型
             if(childElement.type.displayName === 'MenuItem' || childElement.type.displayName === 'SubMenu') {
                 // 给子组件添加index
-                return React.cloneElement(childElement, {
+                return cloneElement(childElement, {
                     index: index.toString()
                 })
             }else {
@@ -84,4 +88,4 @@ Menu.defaultProps = {
     defaultOpenSubMenus: []
 }
 
-export default Menu
+export default Menu;
