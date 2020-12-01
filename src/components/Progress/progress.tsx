@@ -3,13 +3,25 @@ import React, { CSSProperties, FC } from 'react'
 import {ThemeProps} from '../Icon/icon'
 
 export interface ProgressProps {
+    /** 设置 Progress 当前进度 */ 
     percent: number;
+    /** 设置 Progress 高度 */ 
     strokeHeight?: number;
+    /** 设置 Progress 是否显示当前进度 */ 
     showText?: boolean;
+    /** 设置 Progress 主题 */ 
     theme?: ThemeProps;
     styles?: CSSProperties
 }
 
+/**
+ * 进度条，可自定义样式
+ * ### 引用方法
+ * 
+ * ~~~js
+ * import { Progress } from 'sin-react'
+ * ~~~
+ */
 export const Progress: FC<ProgressProps> = (props) => {
     const {
         percent,

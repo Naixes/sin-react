@@ -1,7 +1,7 @@
 import React from 'react'
 import {render, fireEvent} from '@testing-library/react'
 
-import Button, {ButtonProps, ButtonSize, ButtonType} from './button'
+import Button, {ButtonProps} from './button'
 
 // test('first test', () => {
 //     const wrapper = render(<Button>test</Button>)
@@ -17,13 +17,13 @@ const defalutProps = {
 }
 
 const testProps: ButtonProps = {
-    btnType: ButtonType.Primary,
-    size: ButtonSize.Large,
+    btnType: 'primary',
+    size: 'lg',
     className: 'test-class'
 }
 
 const linkProps: ButtonProps = {
-    btnType: ButtonType.Link,
+    btnType: 'link',
     href: 'http://testurl'
 }
 

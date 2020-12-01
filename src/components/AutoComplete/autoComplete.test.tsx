@@ -1,6 +1,6 @@
 import React from 'react'
 import { config } from 'react-transition-group'
-import { render, RenderResult, fireEvent, wait } from '@testing-library/react'
+import { render, RenderResult, fireEvent, waitFor } from '@testing-library/react'
 import { AutoComplete, AutoCompleteProps } from './autoComplete'
 
 config.disabled = true
@@ -28,7 +28,7 @@ describe('test AutoComplete component', () => {
   it('test basic AutoComplete behavior', async () => {
     // input change
     fireEvent.change(inputNode, {target: { value: 'a'}})
-    await wait(() => {
+    await waitFor(() => {
       expect(wrapper.queryByText('ab')).toBeInTheDocument()
     })
     // should have two suggestion items
@@ -44,7 +44,7 @@ describe('test AutoComplete component', () => {
   it('should provide keyboard support', async () => {
     // input change
     fireEvent.change(inputNode, {target: { value: 'a'}})
-    await wait(() => {
+    await waitFor(() => {
       expect(wrapper.queryByText('ab')).toBeInTheDocument()
     })
     const firstResult = wrapper.queryByText('ab')
@@ -68,7 +68,7 @@ describe('test AutoComplete component', () => {
   it('click outside should hide the dropdown', async () => {
     // input change
     fireEvent.change(inputNode, {target: { value: 'a'}})
-    await wait(() => {
+    await waitFor(() => {
       expect(wrapper.queryByText('ab')).toBeInTheDocument()
     })
     fireEvent.click(document)
