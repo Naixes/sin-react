@@ -2,6 +2,7 @@ import axios from 'axios'
 import React, { ChangeEvent, FC, useRef, useState } from 'react'
 
 import UploadList from './uploadList'
+import Dragger from './dragger'
 
 export type UploadFileStatus = 'ready' | 'uploading' | 'success' | 'error'
 export interface UploadFile {
@@ -24,6 +25,13 @@ export interface UploadProps {
     onError?: (err: any, file: UploadFile) => void;
     onChange?: (file: UploadFile) => void;
     onRemove?: (file: UploadFile) => void;
+    headers?: {[key: string]: any};
+    name?: string;
+    data?: {[key: string]: any};
+    withCredentials?: boolean;
+    accept?: string;
+    multiple?: boolean;
+    drage?: boolean;
 }
 
 export const Upload: FC<UploadProps> = (props) => {
@@ -36,6 +44,13 @@ export const Upload: FC<UploadProps> = (props) => {
         onError,
         onChange,
         onRemove,
+        headers,
+        name,
+        data,
+        withCredentials,
+        accept,
+        multiple,
+        drage,
         children,
     } = props
     const [fileList, setFileList] = useState<UploadFile[]>(defaultFileList || [])
@@ -117,14 +132,24 @@ export const Upload: FC<UploadProps> = (props) => {
         })
         // 参数
         const formData = new FormData()
-        formData.append('file', file.raw as File)
+        formData.append(name || 'file', file.raw as File)
+        // 增加自定义data
+        if(data) {
+            Object.keys(data).forEach(key => {
+                formData.append(key, data[key])
+            })
+        }
         axios.post(action, formData, {
             headers: {
+                ...headers,
                 'Content-Type': 'multipart/form-data'
             },
+            withCredentials,
             onUploadProgress: (e) => {
                 // Math.round：取整
                 let percentage = Math.round((e.loaded * 100) / e.total) || 0
+                console.log(percentage);
+                
                 if(percentage < 100) {
                     // 更新列表
                     updateFileList(file, {percent: percentage, status: 'uploading'})
@@ -158,13 +183,20 @@ export const Upload: FC<UploadProps> = (props) => {
                 style={{display: 'inline-block'}}
                 onClick={handleClick}
             >
-                {children}
+                {drage ? 
+                    <Dragger onFile={files => {uploadFiles(files)}}>
+                        {children}
+                    </Dragger>:
+                    children
+                }
             </div>
             <input 
                 className="s-file-input"
                 ref={fileInput}
                 type="file"
                 style={{display: "none"}}
+                accept={accept}
+                multiple={multiple}
                 onChange={handleFileChange}
             />
             <UploadList

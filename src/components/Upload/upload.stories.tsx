@@ -12,14 +12,14 @@ const defaultFileList: UploadFile[] = [
   { uid: '121', size: 1234, name: 'eyiha.md', status: 'error', percent: 30 }
 ]
 const checkFileSize = (file: File) => {
-  if (Math.round(file.size / 1024) > 50) {
+  if (Math.round(file.size / 1024) > 500) {
     alert('file too big')
     return false;
   }
   return true;
 }
 const filePromise = (file: File) => {
-  const newFile = new File([file.raw as File], 'new_name.docx', {type: file.type})
+  const newFile = new File([file], 'new_name.docx', {type: file.type})
   return Promise.resolve(newFile)
 }
 
@@ -44,6 +44,7 @@ const DragUpload = () => {
       beforeUpload={filePromise}
       onChange={action('changed')}
       onRemove={action('removed')}
+      drage
     >
       <Icon icon="upload" size="5x" theme="secondary" />
       <br/>
