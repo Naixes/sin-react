@@ -7,7 +7,7 @@ import Menu from './components/Menu/menu';
 import MenuItem from './components/Menu/menuItem';
 import SubMenu from './components/Menu/subMenu';
 import Icon from './components/Icon/icon';
-import Transition from './components/Transition/Transition';
+import Transition from './components/Transition/transition';
 
 // 添加图标
 library.add(fas);
