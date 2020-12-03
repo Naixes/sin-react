@@ -2,6 +2,9 @@
   "name": "sin-react",
   "version": "0.1.0",
   "private": true,
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -26,11 +29,14 @@
     "web-vitals": "^0.2.4"
   },
   "scripts": {
+    "start": "react-scripts start",
+    "test": "react-scripts test",
+    "build": "npm run clean && npm run build-ts && npm run build-css",
+    "clean": "rimraf ./dist",
+    "build-ts": "tsc -p tsconfig.build.json",
+    "build-css": "node-sass ./src/styles/index.scss ./dist/index.css",
     "storybook": "start-storybook -p 9009 -s public",
     "build-storybook": "build-storybook -s public",
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -62,6 +68,7 @@
     "@types/storybook__addon-info": "^5.2.3",
     "css-loader": "^5.0.1",
     "react-docgen-typescript-loader": "^3.7.2",
+    "rimraf": "^3.0.2",
     "sass-loader": "^10.1.0",
     "style-loader": "^2.0.0"
   }

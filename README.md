@@ -61,6 +61,8 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 构建项目
 
+`npx create-react-app my-app`
+
 代码规范
 
 ### 样式解决方案
@@ -2321,3 +2323,145 @@ describe('test upload component', () => {
 })
 ```
 
+### 模块打包
+
+打包流程：tsc编译tsx------es6 modules.jsx------入口文件引入需要的文件------webpack，rollup等工具打包------一个或者多个浏览器可以使用的文件
+
+#### 选择js模块格式
+
+UMD，可以直接在浏览器使用
+
+> - 为什么ES模块比CommonJS更好?(Why are ES modules better than CommonJS modules?)
+>
+> ES模块是官方标准，也是JavaScript语言明确的发展方向，而CommonJS模块是一种特殊的传统格式，在ES模块被提出之前做为暂时的解决方案。 ES模块允许进行静态分析，从而实现像 tree-shaking 的优化，并提供诸如循环引用和动态绑定等高级功能。
+>
+> - 什么是 ‘tree-shaking’?(What is "tree-shaking?")
+>
+> Tree-shaking, 也被称为 "live code inclusion," 它是清除实际上并没有在给定项目中使用的代码的过程，但是它可以更加高效。
+>
+> 来源于：rollupjs官网
+
+#### 创建入口文件
+
+配置入口文件
+
+package.json的main字段和module字段（对应ES6 module的入口文件路径）
+
+```json
+"main": "dist/index.js",
+"module": "dist/index.js",
+"types": "dist/index.d.ts",
+```
+
+创建入口文件
+
+```tsx
+// 引入图标
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+// 添加图标
+library.add(fas);
+
+export { default as AutoComplete } from './components/AutoComplete'
+export { default as Button } from './components/Button'
+export { default as Icon } from './components/Icon'
+export { default as Input } from './components/Input'
+export { default as Menu } from './components/Menu'
+export { default as Progress } from './components/Progress'
+export { default as Transition } from './components/Transition'
+export { default as Upload } from './components/Upload'
+```
+
+合并包含子组件的组件
+
+```tsx
+import { FC } from 'react'
+import Menu, {MenuProps} from './menu'
+import MenuItem, {MenuItemProps} from './menuItem'
+import SubMenu, {SubMenuProps} from './subMenu'
+
+export type IMenuComponent = FC<MenuProps> & {
+    Item: FC<MenuItemProps>,
+    SubMenu: FC<SubMenuProps>
+}
+
+// 合并成为一个组件
+const TransMenu = Menu as IMenuComponent
+TransMenu.Item = MenuItem
+TransMenu.SubMenu = SubMenu
+
+export default TransMenu
+```
+
+#### tsconfig
+
+```json
+{
+    "compilerOptions": {
+        "outDir": "dist",
+        "module": "esnext",
+        "target": "es5",
+        // 生成声明文件
+        "declaration": true,
+        // jsx编译方式
+        "jsx": "react",
+        // 解决包寻找路径报错
+        "moduleResolution": "Node",
+        // 解决引入default报错
+        "allowSyntheticDefaultImports": true
+    },
+    "include": ["src"],
+    "exclude": [
+        "src/**/*.test.tsx",
+        "src/**/*.stories.tsx",
+    ]
+}
+```
+
+编译ts
+
+`"build-ts": "tsc -p tsconfig.build.json",`
+
+#### 生成样式文件
+
+node-sass
+
+`"build-css": "node-sass ./src/style/index.scss ./dist/index.css",`
+
+删除build文件：rimraf
+
+`"clean": "rimraf ./dist",`
+
+打包
+
+`"build": "npm run clean && npm run build-ts && npm run build-css",`
+
+#### npm link
+
+当前项目`npm link`
+
+测试项目`npm link projectname`
+
+在测试项目中增加项目依赖
+
+在app.js中直接进行测试，注意引入样式
+
+修改重复引入React且版本不一致报错：在项目中link测试项目的React
+
+### 发布
+
+#### 优化
+
+修改package.json
+
+#### 代码质量
+
+代码规范检查
+
+添加测试，cross-env
+
+git hook工具：husky
+
+#### 文档页面
+
+调整顺序
