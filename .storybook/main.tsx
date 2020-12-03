@@ -40,7 +40,6 @@ module.exports = {
             test: /\.(stories|story).s[ca]ss$/,
             use: ['style-loader', 'css-loader', 'sass-loader']
         });
-
         // 配置react-docgen-typescript-loader
         config.module.rules.push({
             test: /\.tsx?$/,

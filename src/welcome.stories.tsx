@@ -1,7 +1,7 @@
 import React from 'react'
 import { storiesOf } from '@storybook/react'
 
-storiesOf('Geting Start', module)
+storiesOf('Get Started', module)
   .add('welcome', () => {
     return (
       <>

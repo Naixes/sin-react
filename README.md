@@ -2452,7 +2452,46 @@ node-sass
 
 #### 优化
 
-修改package.json
+修改package.json，优化依赖
+
+```json
+...
+// 深层依赖
+"peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+},
+// 把react移到这里，防止重复引入版本不兼容
+"devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "@types/classnames": "^2.2.11",
+    "@types/jest": "^26.0.15",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.53",
+    "@types/react-dom": "^16.9.8",
+    "@types/react-transition-group": "^4.4.0",
+    "@storybook/addon-actions": "^6.1.6",
+    "@storybook/addon-info": "^5.3.21",
+    "@storybook/addon-links": "^6.1.6",
+    "@storybook/addons": "^6.1.6",
+    "@storybook/preset-create-react-app": "^3.1.5",
+    "@storybook/preset-scss": "^1.0.3",
+    "@storybook/react": "^6.1.6",
+    "@types/storybook__addon-info": "^5.2.3",
+    "css-loader": "^5.0.1",
+    "react-docgen-typescript-loader": "^3.7.2",
+    "rimraf": "^3.0.2",
+    "typescript": "^4.0.3",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-scripts": "4.0.0",
+    "node-sass": "^4.14.1",
+    "sass-loader": "^10.1.0",
+    "style-loader": "^2.0.0"
+}
+```
 
 #### 代码质量
 
@@ -2462,6 +2501,35 @@ node-sass
 
 git hook工具：husky
 
+```json
+"scripts": {
+    ...
+    "test-nowatch": "cross-env CI=true react-scripts test",
+    "lint": "eslint --ext js,ts,tsx src --max-warning 5",
+    "prepublishOnly": "npm run test-nowatch && npm run lint && npm run build",
+    ...
+},
+"husky": {
+    "hooks": {
+        "pre-commit": "npm run test-nowatch && npm run lint"
+    }
+},
+```
+
 #### 文档页面
 
 调整顺序
+
+```tsx
+// preview.js
+export const parameters = {
+    // layout: 'centered',
+    // 排序
+    options: {
+        storySort: {
+            order: ['Get Started'],
+        },
+    },
+};
+```
+

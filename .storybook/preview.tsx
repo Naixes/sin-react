@@ -1,6 +1,6 @@
 import React from 'react'
-import {addDecorator, addParameters} from '@storybook/react'
-import {withInfo} from '@storybook/addon-info'
+import { addDecorator, addParameters } from '@storybook/react'
+import { withInfo } from '@storybook/addon-info'
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 
@@ -27,4 +27,10 @@ addParameters({info: { inline: true, header: false}})
 
 export const parameters = {
     // layout: 'centered',
+    // 排序
+    options: {
+        storySort: {
+            order: ['Get Started'],
+        },
+    },
 };
