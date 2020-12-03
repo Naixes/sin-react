@@ -2559,6 +2559,19 @@ cache:
 # 环境变量
 env:
 	- CI=true
+# 自动发布文档页面
+script:
+	# 默认是 npm run test
+  	- npm run build-storybook
+# 部署到 Github Pages
+deploy:
+    provider: pages
+    skip_cleanup: true
+    # 需要在github和travis上面配置
+    github_token: $github_token
+    # 上传的文件夹路径
+    local_dir: storybook-static
+    on:
+ 		branch: master
 ```
 
-自动发布文档页面
