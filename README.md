@@ -2533,3 +2533,28 @@ export const parameters = {
 };
 ```
 
+#### CI/CD
+
+持续集成：频繁将代码合并到主干，快速发现，避免分支偏离主干
+
+持续交付：频繁交付新版本交付给质量团队或用户
+
+持续部署：通过评审后自动部署到生产环境
+
+##### Travis CI
+
+```yml
+# .travis.yml
+language: node_js
+# node版本
+node_js:
+	- "stable"
+# 缓存依赖
+cache:
+	directories:
+	- node_modlules
+# 环境变量
+env:
+	- CI=true
+```
+

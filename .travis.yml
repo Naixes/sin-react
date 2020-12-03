@@ -1,0 +1,11 @@
+language: node_js
+# node版本
+node_js:
+	- "stable"
+# 缓存依赖
+cache:
+	directories:
+	- node_modlules
+# 环境变量
+env:
+	- CI=true
