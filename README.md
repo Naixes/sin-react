@@ -2506,6 +2506,7 @@ git hook工具：husky
     ...
     "test-nowatch": "cross-env CI=true react-scripts test",
     "lint": "eslint --ext js,ts,tsx src --max-warning 5",
+    // prepublish命令会在 publish 和 npm i 时都会运行，已废除
     "prepublishOnly": "npm run test-nowatch && npm run lint && npm run build",
     ...
 },
@@ -2543,6 +2544,8 @@ export const parameters = {
 
 ##### Travis CI
 
+每次push会运行test
+
 ```yml
 # .travis.yml
 language: node_js
@@ -2558,3 +2561,4 @@ env:
 	- CI=true
 ```
 
+自动发布文档页面
