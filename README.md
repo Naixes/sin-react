@@ -2493,6 +2493,43 @@ node-sass
 }
 ```
 
+#### 发布
+
+完善package.json
+
+```json
+{  
+    "name": "sin-react",
+    "version": "0.1.0",
+    "description": "React components library",
+    "author": "Naixes",
+    "private": false,
+    "main": "dist/index.js",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "license": "MIT",
+    "keywords": [
+        "Component",
+        "UI",
+        "React"
+    ],
+    "homepage": "https://naixes.github.io/sin-react/",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Naixes/sin-react"
+    },
+    # 上传到npm上面的文件，默认使用.gitignore中的配置
+    "files": [ "dist" ],
+	...
+    "scripts": {
+        ...
+        "prepublishOnly": "npm run test-nowatch && npm run lint && npm run build",
+        ...
+    },
+    ...
+}
+```
+
 #### 代码质量
 
 代码规范检查
@@ -2502,6 +2539,7 @@ node-sass
 git hook工具：husky
 
 ```json
+...
 "scripts": {
     ...
     "test-nowatch": "cross-env CI=true react-scripts test",
@@ -2515,6 +2553,7 @@ git hook工具：husky
         "pre-commit": "npm run test-nowatch && npm run lint"
     }
 },
+...
 ```
 
 #### 文档页面

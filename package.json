@@ -1,10 +1,24 @@
 {
   "name": "sin-react",
   "version": "0.1.0",
-  "private": true,
+  "description": "React components library",
+  "author": "Naixes",
+  "private": false,
   "main": "dist/index.js",
   "module": "dist/index.js",
   "types": "dist/index.d.ts",
+  "license": "MIT",
+  "keywords": [
+    "Component",
+    "UI",
+    "React"
+  ],
+  "homepage": "https://naixes.github.io/sin-react/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Naixes/sin-react"
+  },
+  "files": [ "dist" ],
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -24,7 +38,7 @@
     "test-nowatch": "cross-env CI=true react-scripts test",
     "build": "npm run clean && npm run build-ts && npm run build-css",
     "clean": "rimraf ./dist",
-    "lint": "eslint --ext js,ts,tsx src --max-warning 5",
+    "lint": "eslint --ext js,ts,tsx src --max-warnings 5",
     "prepublishOnly": "npm run test-nowatch && npm run lint && npm run build",
     "build-ts": "tsc -p tsconfig.build.json",
     "build-css": "node-sass ./src/styles/index.scss ./dist/index.css",
